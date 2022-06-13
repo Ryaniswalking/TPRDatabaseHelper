@@ -91,8 +91,8 @@ public class ConvertTestData {
 
         //TM4J Information
         tm4jData.put("testCaseKey", "");
-        tm4jData.put("requirementTraceability", "FR 2.3");
-        tm4jData.put("delta", "DELTA");
+        tm4jData.put("requirementTraceability", "");
+        tm4jData.put("delta", "");
         tm4jData.put("precondition", "");
 
         tm4jSteps1.put("step", "");
