@@ -24,14 +24,14 @@
         </constraints>
         <properties/>
       </component>
-      <scrollpane id="c9f5" binding="sp_Request">
+      <scrollpane id="c9f5" binding="sp_Request" custom-create="true">
         <constraints>
           <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="9b681" class="javax.swing.JTextPane" binding="txtArea_RequestDec">
+          <component id="9b681" class="javax.swing.JTextPane" binding="txtArea_RequestDec" custom-create="true">
             <constraints/>
             <properties/>
           </component>
@@ -45,14 +45,14 @@
           <text value="Response"/>
         </properties>
       </component>
-      <scrollpane id="67eea" binding="sp_Response">
+      <scrollpane id="67eea" binding="sp_Response" custom-create="true">
         <constraints>
           <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties/>
         <border type="none"/>
         <children>
-          <component id="709c7" class="javax.swing.JTextArea" binding="txtArea_ResponseDec">
+          <component id="709c7" class="javax.swing.JTextArea" binding="txtArea_ResponseDec" custom-create="true">
             <constraints/>
             <properties>
               <rows value="0"/>
