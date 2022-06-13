@@ -1,8 +1,9 @@
 package org.walker.tprDBHelper.models;
 
-import com.journaldev.java.xmlutil.PrettyPrint;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.walker.tprDBHelper.workers.PrettyPrint;
 
 import java.util.Base64;
 
