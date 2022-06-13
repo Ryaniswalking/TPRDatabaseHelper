@@ -3,7 +3,7 @@ package org.walker.tprDBHelper.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.walker.tprDBHelper.workers.PrettyPrint;
+import org.walker.tprDBHelper.workers.Prettify;
 
 import java.util.Base64;
 
@@ -59,7 +59,7 @@ public class TestCaseModel {
         }catch(Exception e) {
 
         }
-        return PrettyPrint.format(value);
+        return Prettify.format(value);
     }
 
     private String getStringValue(String path) {
