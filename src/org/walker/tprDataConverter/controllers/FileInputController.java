@@ -1,5 +1,6 @@
 package org.walker.tprDataConverter.controllers;
 
+//import org.json.JSONException;
 import org.json.JSONException;
 import org.walker.tprDataConverter.models.FileInputModel;
 import org.walker.tprDataConverter.views.FileInputView;
@@ -66,14 +67,11 @@ public class FileInputController {
             try {
                 new ConvertTestData(requestPath, responsePath, outputPath);
                 JOptionPane.showMessageDialog(null, "Conversion Complete");
-            } catch (IOException ex) {
+                inputView.setVisible(false);
+            } catch (IOException | JSONException ex) {
                 JOptionPane.showMessageDialog(null, "Conversion Failed");
                 ex.printStackTrace();
-            } catch (JSONException ex) {
-                ex.printStackTrace();
             }
-
-
         }
     }
 }
