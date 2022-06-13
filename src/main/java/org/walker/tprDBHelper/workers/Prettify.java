@@ -1,7 +1,11 @@
 package org.walker.tprDBHelper.workers;
 
+import enums.AppCodes;
 import org.apache.xml.serialize.OutputFormat;
 import org.apache.xml.serialize.XMLSerializer;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.w3c.dom.Document;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -19,8 +23,11 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
-public class PrettyPrint {
+public class Prettify {
 
     /**
      *
@@ -92,5 +99,67 @@ public class PrettyPrint {
             }
         }
         return xmlString;
+    }
+
+    public static JSONObject prettifyForCouch(JSONObject uglyCouchObject) throws JSONException {
+
+        JSONObject prettyObj = setObjectAsLinkedHashMap();
+        ArrayList<String> allTestCaseNames = new ArrayList<>();
+
+        prettyObj.put("_id", uglyCouchObject.getString("_id"));
+        prettyObj.put("_rev",uglyCouchObject.getString("_rev"));
+        prettyObj.put("test_service", uglyCouchObject.getString("test_service"));
+        prettyObj.put("testCaseName", uglyCouchObject.getString("testCaseName"));
+
+        for(AppCodes appCode : AppCodes.values()){
+            prettyObj.put(appCode.toString(), uglyCouchObject.getJSONArray(appCode.toString()));
+        }
+
+
+        for(AppCodes appCode : AppCodes.values()){
+            JSONArray testNames = uglyCouchObject.getJSONArray(appCode.toString());
+            for(int i=0;i< testNames.length();i++){
+                allTestCaseNames.add(testNames.getString(i));
+            }
+        }
+
+        for(String testCaseName : allTestCaseNames){
+            JSONObject prettyTestCase = setObjectAsLinkedHashMap();
+            JSONObject uglyTestCase = uglyCouchObject.getJSONObject(testCaseName);
+
+            prettyTestCase.put("testCaseName",uglyTestCase.getString("testCaseName"));
+            prettyTestCase.put("description", uglyTestCase.getString("description"));
+            prettyTestCase.put("sourceAppCode", uglyTestCase.getString("sourceAppCode"));
+            prettyTestCase.put("request", uglyTestCase.getString("request"));
+            prettyTestCase.put("response", uglyTestCase.getString("response"));
+            prettyTestCase.put("testCaseSteps", uglyTestCase.getJSONObject("testCaseSteps"));
+
+            prettyObj.put(testCaseName, prettyTestCase);
+
+//            JSONObject prettyTm4jData = setObjectAsLinkedHashMap();
+//            JSONObject uglyTm4jData = uglyTestCase.getJSONObject("testCaseSteps");
+
+//            prettyTm4jData.put("testCaseKey", uglyTm4jData.getString("testCaseKey"));
+//            prettyTm4jData.put("requirementTraceability", uglyTm4jData.getString("requirementTraceability"));
+//            prettyTm4jData.put("delta", uglyTm4jData.getString("delta"));
+//            prettyTm4jData.put("precondition", uglyTm4jData.getString("precondition"));
+//
+//            for()
+
+        }
+        return prettyObj;
+    }
+
+    private static JSONObject setObjectAsLinkedHashMap(){
+        JSONObject object = new JSONObject();
+        try {
+            Field changeMap = object.getClass().getDeclaredField("nameValuePairs");
+            changeMap.setAccessible(true);
+            changeMap.set(object, new LinkedHashMap<>());
+            changeMap.setAccessible(false);
+        }catch(IllegalAccessException | NoSuchFieldException e){
+            System.out.println(e.getMessage());
+        }
+        return object;
     }
 }
