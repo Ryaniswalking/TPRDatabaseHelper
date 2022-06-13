@@ -7,6 +7,7 @@ import org.walker.tprDBHelper.models.ListTestCasesModel;
 import org.walker.tprDBHelper.models.TestCaseModel;
 import org.walker.tprDBHelper.views.ListTestCasesView;
 import org.walker.tprDBHelper.views.TestCaseView;
+import org.walker.tprDBHelper.workers.Prettify;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -65,7 +66,8 @@ public class ListTestCasesController {
                 CouchDBModel couchdb = new CouchDBModel();
 
                 try {
-                    int response = couchdb.saveUpdatedTestCasesToCouch(couchKey, allTestCases);
+                    JSONObject prettyCouchDoc = Prettify.prettifyForCouch(allTestCases);
+                    int response = couchdb.saveUpdatedTestCasesToCouch(couchKey, prettyCouchDoc);
 
                     if(response == 201){
                         JOptionPane.showMessageDialog(ltcView, "Couch Document Successfully Save");
@@ -74,6 +76,8 @@ public class ListTestCasesController {
                     }
 
                 } catch (IOException ex) {
+                    ex.printStackTrace();
+                } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
 
