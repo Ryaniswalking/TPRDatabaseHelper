@@ -1,5 +1,6 @@
 package org.walker.tprDBHelper.models;
 
+import com.journaldev.java.xmlutil.PrettyPrint;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -54,12 +55,10 @@ public class TestCaseModel {
         try {
             byte[] valueDecoded = Base64.getDecoder().decode(value);
             value = new String(valueDecoded);
-//            value = new String(valueDecoded).replaceAll("(?m)^\\s+|\\s+$", "");
-//            value = value.replaceAll("\r", "").replaceAll("\n", "");
         }catch(Exception e) {
 
         }
-        return value;
+        return PrettyPrint.format(value);
     }
 
     private String getStringValue(String path) {
