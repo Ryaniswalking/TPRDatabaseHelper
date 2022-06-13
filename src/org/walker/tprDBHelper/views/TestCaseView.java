@@ -1,9 +1,11 @@
 package org.walker.tprDBHelper.views;
 
 import javax.swing.*;
+import javax.swing.text.DefaultCaret;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.Base64;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class TestCaseView extends JFrame {
 
@@ -28,9 +30,10 @@ public class TestCaseView extends JFrame {
 
     public TestCaseView(){
 
-        this.setSize(850, 1100);
+        this.setSize(850, 900);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
+
 
 
         this.add(mainPanel);
@@ -82,9 +85,24 @@ public class TestCaseView extends JFrame {
     }
 
     public String getResponseTextEncoded() {
-        String encodedResponse = Base64.getEncoder().encodeToString(this.txtArea_ResponseDec.getText().getBytes());
-        return encodedResponse;
+        AtomicReference<String> encodedResponse = new AtomicReference<>(Base64.getEncoder().encodeToString(this.txtArea_ResponseDec.getText().getBytes()));
+        return encodedResponse.get();
     }
 
+    private void createUIComponents() {
 
+        txtArea_RequestDec = new JTextPane();
+        txtArea_ResponseDec = new JTextArea();
+
+        //Set default caret to never update so the scroll bar default to top location after textfield is added.
+        DefaultCaret caret = (DefaultCaret) txtArea_ResponseDec.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+
+        caret = (DefaultCaret) txtArea_RequestDec.getCaret();
+        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+
+        sp_Request = new JScrollPane(txtArea_RequestDec, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+
+        sp_Response = new JScrollPane(txtArea_ResponseDec,JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+    }
 }
