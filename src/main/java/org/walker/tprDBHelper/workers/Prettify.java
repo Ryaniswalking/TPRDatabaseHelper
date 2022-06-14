@@ -25,6 +25,8 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 
 public class Prettify {
@@ -132,19 +134,57 @@ public class Prettify {
             prettyTestCase.put("sourceAppCode", uglyTestCase.getString("sourceAppCode"));
             prettyTestCase.put("request", uglyTestCase.getString("request"));
             prettyTestCase.put("response", uglyTestCase.getString("response"));
-            prettyTestCase.put("testCaseSteps", uglyTestCase.getJSONObject("testCaseSteps"));
+
+            try{
+                JSONObject uglyFuncReq = uglyTestCase.getJSONObject("functionalRequirements");
+
+                JSONArray funcReq = uglyFuncReq.names();
+                ArrayList<String> funcReqList = new ArrayList<>();
+
+                for(int i=0;i<funcReq.length();i++){
+                    funcReqList.add(funcReq.getString(i));
+                }
+
+                Collections.sort(funcReqList);
+
+                JSONObject prettyFuncReq = setObjectAsLinkedHashMap();
+                for(String req : funcReqList){
+                    prettyFuncReq.put(req, uglyFuncReq.getString(req));
+                }
+
+                prettyTestCase.put("functionalRequirements", prettyFuncReq);
+
+
+            }catch (JSONException e){}
+
+            JSONObject uglyTestCaseSteps = uglyTestCase.getJSONObject("testCaseSteps");
+            JSONObject prettyTestCaseSteps = setObjectAsLinkedHashMap();
+
+
+            prettyTestCaseSteps.put("testCaseKey", uglyTestCaseSteps.getString("testCaseKey"));
+            prettyTestCaseSteps.put("requirementTraceability", uglyTestCaseSteps.getString("requirementTraceability"));
+            prettyTestCaseSteps.put("delta", uglyTestCaseSteps.getString("delta"));
+            prettyTestCaseSteps.put("precondition", uglyTestCaseSteps.getString("precondition"));
+
+            JSONArray uglySteps = uglyTestCaseSteps.getJSONArray("steps");
+            JSONArray prettySteps = new JSONArray();
+
+            for(int i=0;i<uglySteps.length();i++){
+                JSONObject step = setObjectAsLinkedHashMap();
+                step.put("step", uglySteps.getJSONObject(i).getString("step"));
+                step.put("testData", uglySteps.getJSONObject(i).getString("testData"));
+                step.put("expectedResult", uglySteps.getJSONObject(i).getString("expectedResult"));
+
+                prettySteps.put(step);
+            }
+
+            prettyTestCaseSteps.put("steps", prettySteps);
+
+            prettyTestCase.put("testCaseSteps", prettyTestCaseSteps);
+
 
             prettyObj.put(testCaseName, prettyTestCase);
 
-//            JSONObject prettyTm4jData = setObjectAsLinkedHashMap();
-//            JSONObject uglyTm4jData = uglyTestCase.getJSONObject("testCaseSteps");
-
-//            prettyTm4jData.put("testCaseKey", uglyTm4jData.getString("testCaseKey"));
-//            prettyTm4jData.put("requirementTraceability", uglyTm4jData.getString("requirementTraceability"));
-//            prettyTm4jData.put("delta", uglyTm4jData.getString("delta"));
-//            prettyTm4jData.put("precondition", uglyTm4jData.getString("precondition"));
-//
-//            for()
 
         }
         return prettyObj;
