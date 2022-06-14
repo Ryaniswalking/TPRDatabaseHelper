@@ -67,7 +67,7 @@ public class ListTestCasesController {
 
                 try {
                     JSONObject prettyCouchDoc = Prettify.prettifyForCouch(allTestCases);
-                    int response = couchdb.saveUpdatedTestCasesToCouch(couchKey, prettyCouchDoc);
+                     int response = couchdb.saveUpdatedTestCasesToCouch(couchKey, prettyCouchDoc);
 
                     if(response == 201){
                         JOptionPane.showMessageDialog(ltcView, "Couch Document Successfully Save");
@@ -83,10 +83,6 @@ public class ListTestCasesController {
 
                 ltcView.setVisible(false);
             }
-
-
         }
     }
-
-
 }
