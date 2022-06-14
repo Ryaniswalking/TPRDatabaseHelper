@@ -1,5 +1,6 @@
 package org.walker.tprDBHelper.models;
 
+import enums.AppCodes;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -7,9 +8,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ListTestCasesModel {
-
-    private static final String appCodes = "GW/M1/QB/BB/AS/MR/NG";
-
     private JSONObject testCases;
     private ArrayList<String> testCaseNames = new ArrayList<>();
 
@@ -22,10 +20,9 @@ public class ListTestCasesModel {
         if(testCases == null){
             return;
         }
-        String[] appCodeArr = appCodes.split("/");
 
-        for(int i=0;i<appCodeArr.length;i++) {
-            JSONArray testCaseArray = testCases.getJSONArray(appCodeArr[i]);
+        for(AppCodes appCode: AppCodes.values()){
+            JSONArray testCaseArray = testCases.getJSONArray(appCode.toString());
             for(int j=0;j<testCaseArray.length();j++){
                 testCaseNames.add(testCaseArray.getString(j));
             }
