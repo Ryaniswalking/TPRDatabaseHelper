@@ -31,7 +31,7 @@
         <properties/>
         <border type="none"/>
         <children>
-          <component id="9b681" class="javax.swing.JTextPane" binding="txtArea_RequestDec" custom-create="true">
+          <component id="879f5" class="javax.swing.JTextArea" binding="txtArea_RequestDec" custom-create="true">
             <constraints/>
             <properties/>
           </component>

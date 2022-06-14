@@ -9,20 +9,20 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class TestCaseView extends JFrame {
 
+    private JPanel mainPanel;
 
     private JLabel lbl_TestCaseName;
     private JTextField txt_TestCaseName;
     private JLabel lbl_TestDescription;
+    private JScrollPane sp_Description;
+    private JTextArea txtArea_TestDescription;
     private JLabel lbl_SourceAppCode;
     private JTextField txt_SourceAppCode;
     private JLabel lbl_RequestDec;
 
     private JLabel lbl_ResponseDec;
     private JTextArea txtArea_ResponseDec;
-    private JTextPane txtArea_RequestDec;
-    private JPanel mainPanel;
-    private JTextArea txtArea_TestDescription;
-    private JScrollPane sp_Description;
+    private JTextArea txtArea_RequestDec;
     private JScrollPane sp_Response;
     private JScrollPane sp_Request;
     private JButton btn_Save;
@@ -61,10 +61,12 @@ public class TestCaseView extends JFrame {
 
     public void setDecodedRequestText(String value) {
         this.txtArea_RequestDec.setText(value);
+        this.txtArea_RequestDec.setCaretPosition(0);
     }
 
     public void setDecodedResponseText(String value) {
         this.txtArea_ResponseDec.setText(value);
+        this.txtArea_ResponseDec.setCaretPosition(0);
     }
 
     public String getTestCaseNameText(){
@@ -91,15 +93,15 @@ public class TestCaseView extends JFrame {
 
     private void createUIComponents() {
 
-        txtArea_RequestDec = new JTextPane();
+        txtArea_RequestDec = new JTextArea();
         txtArea_ResponseDec = new JTextArea();
 
         //Set default caret to never update so the scroll bar default to top location after textfield is added.
         DefaultCaret caret = (DefaultCaret) txtArea_ResponseDec.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         caret = (DefaultCaret) txtArea_RequestDec.getCaret();
-        caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+        caret.setUpdatePolicy(DefaultCaret.ALWAYS_UPDATE);
 
         sp_Request = new JScrollPane(txtArea_RequestDec, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
