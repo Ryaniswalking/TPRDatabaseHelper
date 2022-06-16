@@ -1,11 +1,11 @@
 package org.walker.tprDBHelper.controllers;
 
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.walker.tprDBHelper.models.CouchDBModel;
 import org.walker.tprDBHelper.models.CouchDocumentsModel;
 import org.walker.tprDBHelper.views.CouchDocumentsView;
 import org.walker.tprDBHelper.views.DatabaseInfoForm;
+import org.walker.tprDBHelper.views.TPRDatabaseHelperView;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,14 +20,16 @@ public class DatabaseInfoController {
         this.dbForm = dbForm;
         this.dbModel = dbModel;
 
-        this.dbForm.addEnterButtonListener(new EnterButtonlistener());
+        this.dbForm.addEnterButtonListener(new EnterButtonListener());
+        this.dbForm.addBackButtonListener(new BackButtonLister());
+
+        this.dbForm.setVisible(true);
     }
 
-    class EnterButtonlistener implements ActionListener {
+    class EnterButtonListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            JSONObject listOfTestCasesJson = new JSONObject();
             String designDoc, viewName;
 
             designDoc = dbForm.getDesignDocText();
@@ -41,10 +43,19 @@ public class DatabaseInfoController {
 
             try {
                 new CouchDocumentsController(new CouchDocumentsModel(dbModel.getCouchKeysJson()), new CouchDocumentsView());
+                dbForm.setVisible(false);
             } catch (JSONException ex) {
                 ex.printStackTrace();
             }
+        }
+    }
 
+    class BackButtonLister implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new TPRDatabaseHelperView();
+            dbForm.setVisible(false);
         }
     }
 }
