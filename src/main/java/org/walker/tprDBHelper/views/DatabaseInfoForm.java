@@ -13,6 +13,7 @@ public class DatabaseInfoForm extends JFrame {
     private JPanel panel;
     private JLabel label_DesignDoc;
     private JLabel label_ViewName;
+    private JButton btn_Back;
 
     public DatabaseInfoForm() {
 
@@ -32,8 +33,13 @@ public class DatabaseInfoForm extends JFrame {
         return text_ViewName.getText();
     }
 
-    public void addEnterButtonListener(ActionListener listenForEnter){
-        btn_Enter.addActionListener(listenForEnter);
+    public void addEnterButtonListener(ActionListener listenForButtonClick){
+        btn_Enter.addActionListener(listenForButtonClick);
+
+    }
+
+    public void addBackButtonListener(ActionListener listener){
+        btn_Back.addActionListener(listener);
     }
 
     public void displayErrorMessage(String errorMessage){
