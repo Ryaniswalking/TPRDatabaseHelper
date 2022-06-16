@@ -1,11 +1,13 @@
 package org.walker.tprDBHelper.controllers;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.walker.tprDBHelper.models.CouchDBModel;
 import org.walker.tprDBHelper.models.CouchDocumentsModel;
 import org.walker.tprDBHelper.models.ListTestCasesModel;
 import org.walker.tprDBHelper.views.CouchDocumentsView;
+import org.walker.tprDBHelper.views.DatabaseInfoForm;
 import org.walker.tprDBHelper.views.ListTestCasesView;
 
 import java.awt.event.ActionEvent;
@@ -23,6 +25,7 @@ public class CouchDocumentsController {
         cdView.displayCouchKeyNames(cdModel.getCouchKeyNamesArray());
 
         this.cdView.addSelectedKeyNameListener(new SelectViewNameListener());
+        this.cdView.addBackButtonListener(new BackButtonLister());
 
         cdView.setVisible(true);
     }
@@ -49,5 +52,12 @@ public class CouchDocumentsController {
             }
         }
     }
+    class BackButtonLister implements ActionListener {
 
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            new DatabaseInfoController(new DatabaseInfoForm(), new CouchDBModel());
+            cdView.setVisible(false);
+        }
+    }
 }
