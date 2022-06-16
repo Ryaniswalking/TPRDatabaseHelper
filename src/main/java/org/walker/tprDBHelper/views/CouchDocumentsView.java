@@ -2,7 +2,6 @@ package org.walker.tprDBHelper.views;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,21 +10,35 @@ import java.util.ArrayList;
 
 public class CouchDocumentsView extends JFrame {
 
-    private JPanel panel;
+    private JPanel mainPanel;
+    private JPanel keysPanel;
+    private JPanel backButtonPanel;
+    private JButton backButton;
     private ArrayList<JButton> viewNameButtonList = new ArrayList<>();
 
     public CouchDocumentsView(){
 
-        panel = new JPanel();
+        mainPanel = new JPanel(new GridLayout(0, 1));
+        keysPanel = new JPanel();
 
-        panel.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
-        panel.setLayout(new GridLayout(0, 1));
+        keysPanel.setBorder(BorderFactory.createEmptyBorder(0, 30, 0, 30));
+        keysPanel.setLayout(new GridLayout(0, 1));
 
         this.setSize(300, 200);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 
-        this.add(panel);
+        mainPanel.add(keysPanel);
+
+        //Also Display Back Button
+        backButtonPanel = new JPanel(new BorderLayout());
+        backButton = new JButton("Back");
+        backButtonPanel.add(backButton, BorderLayout.PAGE_END);
+
+        mainPanel.add(backButtonPanel);
+
+        this.add(mainPanel);
+
     }
 
     public void displayCouchKeyNames(JSONArray keyNameArray) throws JSONException {
@@ -40,6 +53,8 @@ public class CouchDocumentsView extends JFrame {
             viewNameButtonList.add(keyNameBTN);
             panel.add(keyNameBTN);
         }
+    public void addBackButtonListener(ActionListener listener){
+        backButton.addActionListener(listener);
     }
 
     public void addSelectedKeyNameListener(ActionListener listenForBeingSelected){
@@ -52,7 +67,7 @@ public class CouchDocumentsView extends JFrame {
         JOptionPane.showMessageDialog(this, errorMessage);
     }
 
-    public void setPanel(JPanel panel){
-        this.panel = panel;
+    public void setKeysPanel(JPanel keysPanel){
+        this.keysPanel = keysPanel;
     }
 }
