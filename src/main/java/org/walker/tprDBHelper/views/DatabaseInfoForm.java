@@ -10,7 +10,7 @@ public class DatabaseInfoForm extends JFrame {
     private JTextField text_DesignDoc;
     private JTextField text_ViewName;
     private JButton btn_Enter;
-    private JPanel panel;
+    private JPanel mainPanel;
     private JLabel label_DesignDoc;
     private JLabel label_ViewName;
     private JButton btn_Back;
@@ -22,7 +22,7 @@ public class DatabaseInfoForm extends JFrame {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width/2-this.getSize().width/2, dim.height/2-this.getSize().height/2);
 
-        this.add(panel);
+        this.add(mainPanel);
     }
 
     public String getDesignDocText(){
