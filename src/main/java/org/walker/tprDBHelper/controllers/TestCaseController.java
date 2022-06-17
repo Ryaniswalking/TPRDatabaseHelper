@@ -15,6 +15,7 @@ public class TestCaseController {
 
     private TestCaseView tcView;
     private TestCaseModel tcModel;
+    private JSONObject couchDocumentObj;
 
     public TestCaseController(TestCaseModel model, TestCaseView view){
         this.tcModel = model;
@@ -28,6 +29,11 @@ public class TestCaseController {
 
         this.tcView.setVisible(true);
 
+    }
+
+    public TestCaseController(TestCaseModel model, TestCaseView view, JSONObject couchDocumentObj){
+        this(model, view);
+        this.couchDocumentObj = couchDocumentObj;
     }
 
     private void setTestCaseFieldValues(){
@@ -83,7 +89,7 @@ public class TestCaseController {
 
             if(result == JOptionPane.YES_OPTION){
                 try {
-                    new ListTestCasesController(new ListTestCasesModel(tcModel.getAllTestCasesObj()), new ListTestCasesView());
+                    new ListTestCasesController(new ListTestCasesModel(tcModel.getAllTestCasesObj()), new ListTestCasesView(), couchDocumentObj);
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
