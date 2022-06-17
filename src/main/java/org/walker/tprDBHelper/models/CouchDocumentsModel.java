@@ -15,7 +15,7 @@ public class CouchDocumentsModel {
         setKeyNameJsonArray();
     }
 
-    public JSONObject getTestCasesJson(){
+    public JSONObject getCouchDocumentsObj(){
         return this.couchDocuments;
     }
 
