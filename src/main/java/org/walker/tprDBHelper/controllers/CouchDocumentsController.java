@@ -45,7 +45,9 @@ public class CouchDocumentsController {
             try {
                 JSONObject testCases = couchDB.getTestCaseData(keyNameID);
 
-                new ListTestCasesController(new ListTestCasesModel(testCases), new ListTestCasesView());
+                new ListTestCasesController(new ListTestCasesModel(testCases), new ListTestCasesView(), cdModel.getCouchDocumentsObj());
+
+                cdView.setVisible(false);
 
             } catch (IOException | JSONException ex) {
                 ex.printStackTrace();
