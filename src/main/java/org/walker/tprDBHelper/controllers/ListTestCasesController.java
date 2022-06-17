@@ -3,8 +3,10 @@ package org.walker.tprDBHelper.controllers;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.walker.tprDBHelper.models.CouchDBModel;
+import org.walker.tprDBHelper.models.CouchDocumentsModel;
 import org.walker.tprDBHelper.models.ListTestCasesModel;
 import org.walker.tprDBHelper.models.TestCaseModel;
+import org.walker.tprDBHelper.views.CouchDocumentsView;
 import org.walker.tprDBHelper.views.ListTestCasesView;
 import org.walker.tprDBHelper.views.TestCaseView;
 import org.walker.tprDBHelper.workers.Prettify;
@@ -19,6 +21,7 @@ public class ListTestCasesController {
 
     private ListTestCasesModel ltcModel;
     private ListTestCasesView ltcView;
+    private JSONObject couchDocumentsObj;
 
     public ListTestCasesController(ListTestCasesModel ltcModel, ListTestCasesView ltcView){
         this.ltcModel = ltcModel;
@@ -28,8 +31,14 @@ public class ListTestCasesController {
 
         this.ltcView.addSelectedKeyNameListener(new SelectViewNameListener());
         this.ltcView.addSaveToCouchButtonListener(new SaveToCouchButtonLister());
+        this.ltcView.addBackButtonListener(new BackButtonListener());
 
         this.ltcView.setVisible(true);
+    }
+
+    public ListTestCasesController(ListTestCasesModel ltcModel, ListTestCasesView ltcView, JSONObject couchDocumentsObj){
+        this(ltcModel,ltcView);
+        this.couchDocumentsObj = couchDocumentsObj;
     }
 
     class SelectViewNameListener implements ActionListener {
@@ -38,7 +47,7 @@ public class ListTestCasesController {
         public void actionPerformed(ActionEvent e) {
             String keyName = e.getActionCommand();
             try {
-                new TestCaseController(new TestCaseModel(ltcModel.getTestCaseObj(keyName), ltcModel.getAllTestCasesObj(), keyName), new TestCaseView());
+                new TestCaseController(new TestCaseModel(ltcModel.getTestCaseObj(keyName), ltcModel.getAllTestCasesObj(), keyName), new TestCaseView(), couchDocumentsObj);
             } catch (JSONException ex) {
                 ex.printStackTrace();
             }
@@ -82,6 +91,19 @@ public class ListTestCasesController {
                 }
 
                 ltcView.setVisible(false);
+            }
+        }
+    }
+
+    class BackButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                new CouchDocumentsController(new CouchDocumentsModel(couchDocumentsObj), new CouchDocumentsView());
+                ltcView.setVisible(false);
+            } catch (JSONException ex) {
+                ex.printStackTrace();
             }
         }
     }
