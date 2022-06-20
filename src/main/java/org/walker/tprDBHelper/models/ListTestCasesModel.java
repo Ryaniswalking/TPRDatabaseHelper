@@ -22,9 +22,13 @@ public class ListTestCasesModel {
         }
 
         for(AppCodes appCode: AppCodes.values()){
-            JSONArray testCaseArray = testCases.getJSONArray(appCode.toString());
-            for(int j=0;j<testCaseArray.length();j++){
-                testCaseNames.add(testCaseArray.getString(j));
+            try {
+                 JSONArray testCaseArray = testCases.getJSONArray(appCode.toString());
+                    for (int j = 0; j < testCaseArray.length(); j++) {
+                        testCaseNames.add(testCaseArray.getString(j));
+                    }
+            }catch(JSONException e){
+                System.out.println("No Info for: " + appCode);
             }
         }
     }

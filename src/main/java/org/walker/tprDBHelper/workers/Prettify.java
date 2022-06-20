@@ -114,14 +114,22 @@ public class Prettify {
         prettyObj.put("testCaseName", uglyCouchObject.getString("testCaseName"));
 
         for(AppCodes appCode : AppCodes.values()){
-            prettyObj.put(appCode.toString(), uglyCouchObject.getJSONArray(appCode.toString()));
+            try {
+                prettyObj.put(appCode.toString(), uglyCouchObject.getJSONArray(appCode.toString()));
+            }catch(JSONException e){
+                System.out.println("No Information for: " + appCode.toString());
+            }
         }
 
 
         for(AppCodes appCode : AppCodes.values()){
-            JSONArray testNames = uglyCouchObject.getJSONArray(appCode.toString());
-            for(int i=0;i< testNames.length();i++){
-                allTestCaseNames.add(testNames.getString(i));
+            try{
+                JSONArray testNames = uglyCouchObject.getJSONArray(appCode.toString());
+                for(int i=0;i< testNames.length();i++){
+                    allTestCaseNames.add(testNames.getString(i));
+                }
+            }catch(JSONException e){
+                System.out.println("No Information for: " + appCode.toString());
             }
         }
 
