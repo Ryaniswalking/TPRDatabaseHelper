@@ -72,10 +72,10 @@ public class DatabaseInfoForm extends JFrame {
         label_DesignDoc.setText("Design Doc:");
         mainPanel.add(label_DesignDoc, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_EAST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         text_DesignDoc = new JTextField();
-        text_DesignDoc.setText("simulator");
+        text_DesignDoc.setText("");
         mainPanel.add(text_DesignDoc, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         text_ViewName = new JTextField();
-        text_ViewName.setText("InsightScore_Regression");
+        text_ViewName.setText("");
         mainPanel.add(text_ViewName, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         label_ViewName = new JLabel();
         label_ViewName.setText("View Name:");

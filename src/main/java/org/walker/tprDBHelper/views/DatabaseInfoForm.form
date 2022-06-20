@@ -23,7 +23,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="simulator"/>
+          <text value=""/>
         </properties>
       </component>
       <component id="d82d1" class="javax.swing.JTextField" binding="text_ViewName">
@@ -33,7 +33,7 @@
           </grid>
         </constraints>
         <properties>
-          <text value="InsightScore_Regression"/>
+          <text value=""/>
         </properties>
       </component>
       <component id="664b4" class="javax.swing.JLabel" binding="label_ViewName">
