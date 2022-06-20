@@ -72,7 +72,7 @@ public class TestCaseController {
                 tcView.setVisible(false);
 
                 try {
-                    new ListTestCasesController(new ListTestCasesModel(allTestCasesObj), new ListTestCasesView());
+                    new ListTestCasesController(new ListTestCasesModel(allTestCasesObj), new ListTestCasesView(),  couchDocumentObj, scrollPosition);
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
