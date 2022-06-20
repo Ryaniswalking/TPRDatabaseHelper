@@ -7,6 +7,7 @@ import org.walker.tprDBHelper.views.CouchDocumentsView;
 import org.walker.tprDBHelper.views.DatabaseInfoForm;
 import org.walker.tprDBHelper.views.TPRDatabaseHelperView;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
@@ -35,10 +36,16 @@ public class DatabaseInfoController {
             designDoc = dbForm.getDesignDocText();
             viewName = dbForm.getViewNameText();
 
+            if(designDoc.isEmpty() || viewName.isEmpty()){
+                JOptionPane.showMessageDialog(null, "Design Doc and View Name required.");
+                return;
+            }
+
             try {
                 dbModel.setListOfCouchKeys(designDoc, viewName);
             } catch (IOException | JSONException ex) {
-                ex.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Invalid Design Doc and View Name");
+                return;
             }
 
             try {
