@@ -25,6 +25,7 @@ public class ListTestCasesView extends JFrame {
         this.setSize(600, 600);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         this.add(panel_Main);
     }
@@ -51,6 +52,14 @@ public class ListTestCasesView extends JFrame {
 
     public void addSaveToCouchButtonListener(ActionListener listenForSaveButtonClick) {
         btn_SaveToCouch.addActionListener((listenForSaveButtonClick));
+    }
+
+    public Integer getScrollLocation() {
+        return scroll_TestCases.getVerticalScrollBar().getValue();
+    }
+
+    public void setScrollBarLocation(int location) {
+        scroll_TestCases.getVerticalScrollBar().setValue(location);
     }
 
     public void addBackButtonListener(ActionListener listener) {
