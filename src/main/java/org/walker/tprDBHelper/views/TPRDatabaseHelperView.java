@@ -21,6 +21,7 @@ public class TPRDatabaseHelperView extends JFrame {
         this.setSize(300, 200);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         $$$setupUI$$$();
         btn_DBHelper.addActionListener(this::buttonPressed);

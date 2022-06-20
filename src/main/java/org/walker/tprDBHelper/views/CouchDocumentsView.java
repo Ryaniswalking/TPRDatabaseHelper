@@ -28,6 +28,7 @@ public class CouchDocumentsView extends JFrame {
         this.setSize(400, 400);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         this.add(panel_Main);
 
