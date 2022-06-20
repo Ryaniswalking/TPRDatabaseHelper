@@ -41,13 +41,21 @@ public class ListTestCasesController {
         this.couchDocumentsObj = couchDocumentsObj;
     }
 
+    public ListTestCasesController(ListTestCasesModel ltcModel, ListTestCasesView ltcView, JSONObject couchDocumentsObj, int scrollBarLocation){
+        this(ltcModel,ltcView, couchDocumentsObj);
+        ltcView.setScrollBarLocation(scrollBarLocation);
+    }
+
     class SelectViewNameListener implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             String keyName = e.getActionCommand();
+
+            int scrollBarLocation = ltcView.getScrollLocation();
+
             try {
-                new TestCaseController(new TestCaseModel(ltcModel.getTestCaseObj(keyName), ltcModel.getAllTestCasesObj(), keyName), new TestCaseView(), couchDocumentsObj);
+                new TestCaseController(new TestCaseModel(ltcModel.getTestCaseObj(keyName), ltcModel.getAllTestCasesObj(), keyName), new TestCaseView(), couchDocumentsObj, scrollBarLocation);
             } catch (JSONException ex) {
                 ex.printStackTrace();
             }
@@ -80,17 +88,16 @@ public class ListTestCasesController {
 
                     if(response == 201){
                         JOptionPane.showMessageDialog(ltcView, "Couch Document Successfully Save");
+                        new CouchDocumentsController(new CouchDocumentsModel(couchDocumentsObj), new CouchDocumentsView());
+                        ltcView.setVisible(false);
                     }else{
                         JOptionPane.showMessageDialog(ltcView,"Failed to Save Document to Couch");
                     }
-
                 } catch (IOException ex) {
                     ex.printStackTrace();
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
-
-                ltcView.setVisible(false);
             }
         }
     }
