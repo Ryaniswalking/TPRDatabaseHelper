@@ -9,6 +9,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class CouchDBModel {
 
@@ -87,7 +88,9 @@ public class CouchDBModel {
 
     private JSONObject getDBRequest(String urlStr) throws IOException, JSONException {
 
-        URL url = new URL(urlStr);
+        String encodedUrl = urlStr.replaceAll(" ", "%20");
+
+        URL url = new URL(encodedUrl);
         HttpURLConnection con = (HttpURLConnection) url.openConnection();
 
 
