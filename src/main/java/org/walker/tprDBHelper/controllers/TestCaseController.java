@@ -16,6 +16,7 @@ public class TestCaseController {
     private TestCaseView tcView;
     private TestCaseModel tcModel;
     private JSONObject couchDocumentObj;
+    private int scrollPosition;
 
     public TestCaseController(TestCaseModel model, TestCaseView view){
         this.tcModel = model;
@@ -31,9 +32,10 @@ public class TestCaseController {
 
     }
 
-    public TestCaseController(TestCaseModel model, TestCaseView view, JSONObject couchDocumentObj){
+    public TestCaseController(TestCaseModel model, TestCaseView view, JSONObject couchDocumentObj, int scrollPosition){
         this(model, view);
         this.couchDocumentObj = couchDocumentObj;
+        this.scrollPosition = scrollPosition;
     }
 
     private void setTestCaseFieldValues(){
@@ -89,7 +91,7 @@ public class TestCaseController {
 
             if(result == JOptionPane.YES_OPTION){
                 try {
-                    new ListTestCasesController(new ListTestCasesModel(tcModel.getAllTestCasesObj()), new ListTestCasesView(), couchDocumentObj);
+                    new ListTestCasesController(new ListTestCasesModel(tcModel.getAllTestCasesObj()), new ListTestCasesView(), couchDocumentObj, scrollPosition);
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
