@@ -1,9 +1,12 @@
 package org.walker.tprDBHelper.views;
 
+import org.apache.commons.lang3.StringUtils;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ListTestCasesView extends JFrame {
 
@@ -30,13 +33,18 @@ public class ListTestCasesView extends JFrame {
         this.add(panel_Main);
     }
 
-    public void displayAllTestCases(ArrayList<String> keyNameArray) {
+    public void displayAllTestCases(ArrayList<String> keyNameArray, HashMap<String, Boolean> updatedTestCaseMap) {
         if (keyNameArray == null) {
             return;
         }
 
         for (int i = 0; i < keyNameArray.size(); i++) {
-            JButton testCaseBTN = new JButton(keyNameArray.get(i));
+            String keyName = keyNameArray.get(i);
+            JButton testCaseBTN = new JButton(StringUtils.abbreviate(keyName, 70));
+            testCaseBTN.setActionCommand(keyName);
+            if (updatedTestCaseMap.get(keyNameArray.get(i))) {
+                testCaseBTN.setBackground(new Color(247, 153, 153));
+            }
             testCaseButtonList.add(testCaseBTN);
             panel_TestCases.add(testCaseBTN);
         }
