@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class ListTestCasesModel {
     private JSONObject testCases;
@@ -31,6 +32,26 @@ public class ListTestCasesModel {
                 System.out.println("No Info for: " + appCode);
             }
         }
+    }
+
+    public HashMap<String, Boolean> getNonUpdateTestCaseMap(){
+        if(testCases == null){
+            return null;
+        }
+
+        HashMap<String, Boolean> map = new HashMap<String, Boolean>();
+
+        for(AppCodes appCode: AppCodes.values()){
+            try {
+                JSONArray testCaseArray = testCases.getJSONArray(appCode.toString());
+                for (int j = 0; j < testCaseArray.length(); j++) {
+                    map.put(testCaseArray.getString(j), false);
+                }
+            }catch(JSONException e) {
+                System.out.println("No Info for: " + appCode);
+            }
+        }
+        return map;
     }
 
     public ArrayList<String> getTestCaseNamesList(){
