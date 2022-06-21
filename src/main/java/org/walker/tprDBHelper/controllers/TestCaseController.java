@@ -10,6 +10,7 @@ import org.walker.tprDBHelper.views.TestCaseView;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 
 public class TestCaseController {
 
@@ -17,6 +18,7 @@ public class TestCaseController {
     private TestCaseModel tcModel;
     private JSONObject couchDocumentObj;
     private int scrollPosition;
+    private HashMap<String, Boolean> updatedTestCaseMap;
 
     public TestCaseController(TestCaseModel model, TestCaseView view){
         this.tcModel = model;
@@ -32,10 +34,11 @@ public class TestCaseController {
 
     }
 
-    public TestCaseController(TestCaseModel model, TestCaseView view, JSONObject couchDocumentObj, int scrollPosition){
+    public TestCaseController(TestCaseModel model, TestCaseView view, JSONObject couchDocumentObj, int scrollPosition, HashMap<String, Boolean> updatedTestCaseMap){
         this(model, view);
         this.couchDocumentObj = couchDocumentObj;
         this.scrollPosition = scrollPosition;
+        this.updatedTestCaseMap = updatedTestCaseMap;
     }
 
     private void setTestCaseFieldValues(){
@@ -68,11 +71,16 @@ public class TestCaseController {
                  allTestCasesObj.put(tcModel.getTestCaseKeyName(), testCaseObj);
              }catch(JSONException ex){}
 
-
+                updatedTestCaseMap.put(tcModel.getTestCaseKeyName(), true);
                 tcView.setVisible(false);
 
                 try {
-                    new ListTestCasesController(new ListTestCasesModel(allTestCasesObj), new ListTestCasesView(),  couchDocumentObj, scrollPosition);
+                    new ListTestCasesController(
+                            new ListTestCasesModel(allTestCasesObj),
+                            new ListTestCasesView(),
+                            couchDocumentObj,
+                            scrollPosition,
+                            updatedTestCaseMap);
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
@@ -91,7 +99,13 @@ public class TestCaseController {
 
             if(result == JOptionPane.YES_OPTION){
                 try {
-                    new ListTestCasesController(new ListTestCasesModel(tcModel.getAllTestCasesObj()), new ListTestCasesView(), couchDocumentObj, scrollPosition);
+                    new ListTestCasesController(
+                            new ListTestCasesModel(tcModel.getAllTestCasesObj()),
+                            new ListTestCasesView(),
+                            couchDocumentObj,
+                            scrollPosition,
+                            updatedTestCaseMap);
+
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
