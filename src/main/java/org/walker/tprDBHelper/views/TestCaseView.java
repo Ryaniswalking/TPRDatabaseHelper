@@ -30,6 +30,9 @@ public class TestCaseView extends JFrame {
     private JScrollPane sp_Request;
     private JButton btn_Save;
     private JButton btn_Back;
+    private JTextArea txt_RequestChild;
+    private JTextArea txt_ResponseChild;
+    private JPanel panel_ChildData;
 
     public TestCaseView() {
 
@@ -72,6 +75,16 @@ public class TestCaseView extends JFrame {
         this.txtArea_ResponseDec.setCaretPosition(0);
     }
 
+    public void setDecodedRequestChildText(String value) {
+        this.txt_RequestChild.setText(value);
+        this.txt_RequestChild.setCaretPosition(0);
+    }
+
+    public void setDecodedResponseChildText(String value) {
+        this.txt_ResponseChild.setText(value);
+        this.txt_ResponseChild.setCaretPosition(0);
+    }
+
     public String getTestCaseNameText() {
         return this.txt_TestCaseName.getText();
     }
@@ -92,6 +105,25 @@ public class TestCaseView extends JFrame {
     public String getResponseTextEncoded() {
         AtomicReference<String> encodedResponse = new AtomicReference<>(Base64.getEncoder().encodeToString(this.txtArea_ResponseDec.getText().getBytes()));
         return encodedResponse.get();
+    }
+
+    public String getRequestChildTextEncoded() {
+        String encodedRequest = Base64.getEncoder().encodeToString(this.txt_RequestChild.getText().getBytes());
+        return encodedRequest;
+    }
+
+    public String getResponseChildTextEncoded() {
+        String encodedResponse = Base64.getEncoder().encodeToString(this.txt_ResponseChild.getText().getBytes());
+        return encodedResponse;
+    }
+
+    //set visibility or child req/res panel
+    public void showChildDataPanel(Boolean value) {
+        panel_ChildData.setVisible(value);
+    }
+
+    public Boolean isChildPanelVisible() {
+        return panel_ChildData.isVisible();
     }
 
     private void createUIComponents() {
@@ -121,12 +153,7 @@ public class TestCaseView extends JFrame {
     private void $$$setupUI$$$() {
         createUIComponents();
         mainPanel = new JPanel();
-        mainPanel.setLayout(new GridLayoutManager(6, 2, new Insets(0, 0, 0, 10), -1, -1));
-        lbl_TestCaseName = new JLabel();
-        lbl_TestCaseName.setText("Test Case Name");
-        mainPanel.add(lbl_TestCaseName, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
-        txt_TestCaseName = new JTextField();
-        mainPanel.add(txt_TestCaseName, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        mainPanel.setLayout(new GridLayoutManager(6, 4, new Insets(0, 0, 0, 10), -1, -1));
         mainPanel.add(sp_Request, new GridConstraints(3, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         sp_Request.setViewportView(txtArea_RequestDec);
         lbl_ResponseDec = new JLabel();
@@ -139,7 +166,7 @@ public class TestCaseView extends JFrame {
         lbl_SourceAppCode.setText("Source App Code");
         mainPanel.add(lbl_SourceAppCode, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         txt_SourceAppCode = new JTextField();
-        mainPanel.add(txt_SourceAppCode, new GridConstraints(1, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        mainPanel.add(txt_SourceAppCode, new GridConstraints(1, 1, 1, 3, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
         lbl_RequestDec = new JLabel();
         lbl_RequestDec.setText("Request");
         mainPanel.add(lbl_RequestDec, new GridConstraints(3, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
@@ -147,7 +174,7 @@ public class TestCaseView extends JFrame {
         lbl_TestDescription.setText("Description");
         mainPanel.add(lbl_TestDescription, new GridConstraints(2, 0, 1, 1, GridConstraints.ANCHOR_NORTHWEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
         sp_Description = new JScrollPane();
-        mainPanel.add(sp_Description, new GridConstraints(2, 1, 1, 1, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, 1, GridConstraints.SIZEPOLICY_CAN_GROW, null, null, new Dimension(-1, 60), 0, false));
+        mainPanel.add(sp_Description, new GridConstraints(2, 1, 1, 3, GridConstraints.ANCHOR_NORTH, GridConstraints.FILL_HORIZONTAL, 1, GridConstraints.SIZEPOLICY_CAN_GROW, null, new Dimension(-1, 40), new Dimension(-1, 40), 0, false));
         txtArea_TestDescription = new JTextArea();
         txtArea_TestDescription.setLineWrap(true);
         txtArea_TestDescription.setMaximumSize(new Dimension(850, -1));
@@ -159,13 +186,33 @@ public class TestCaseView extends JFrame {
         sp_Description.setViewportView(txtArea_TestDescription);
         final JPanel panel1 = new JPanel();
         panel1.setLayout(new GridLayoutManager(1, 2, new Insets(0, 0, 0, 0), -1, -1));
-        mainPanel.add(panel1, new GridConstraints(5, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        mainPanel.add(panel1, new GridConstraints(5, 1, 1, 3, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
         btn_Save = new JButton();
         btn_Save.setText("Save");
         panel1.add(btn_Save, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
         btn_Back = new JButton();
         btn_Back.setText("Back");
         panel1.add(btn_Back, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        final JPanel panel2 = new JPanel();
+        panel2.setLayout(new GridLayoutManager(1, 2, new Insets(5, 0, 0, 0), -1, -1));
+        mainPanel.add(panel2, new GridConstraints(0, 0, 1, 4, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        lbl_TestCaseName = new JLabel();
+        lbl_TestCaseName.setText("Test Case Name  ");
+        panel2.add(lbl_TestCaseName, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_NONE, GridConstraints.SIZEPOLICY_FIXED, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        txt_TestCaseName = new JTextField();
+        txt_TestCaseName.setMargin(new Insets(2, 6, 2, 6));
+        panel2.add(txt_TestCaseName, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        panel_ChildData = new JPanel();
+        panel_ChildData.setLayout(new GridLayoutManager(2, 1, new Insets(0, 0, 0, 0), -1, -1));
+        mainPanel.add(panel_ChildData, new GridConstraints(3, 2, 2, 2, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, null, null, null, 0, false));
+        final JScrollPane scrollPane1 = new JScrollPane();
+        panel_ChildData.add(scrollPane1, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        txt_RequestChild = new JTextArea();
+        scrollPane1.setViewportView(txt_RequestChild);
+        final JScrollPane scrollPane2 = new JScrollPane();
+        panel_ChildData.add(scrollPane2, new GridConstraints(1, 0, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_BOTH, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_WANT_GROW, null, null, null, 0, false));
+        txt_ResponseChild = new JTextArea();
+        scrollPane2.setViewportView(txt_ResponseChild);
     }
 
     /**
