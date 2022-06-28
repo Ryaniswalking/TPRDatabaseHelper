@@ -64,8 +64,22 @@ public class FileInputController {
             String responsePath = inputView.getResponseFilePathText();
             String outputPath = inputView.getOutputFilePathText();
 
+            String reqTrace = JOptionPane.showInputDialog(inputView, "Enter Requirement Traceability");
+
+            boolean correctInput = false;
+            String delta = "";
+            while(!correctInput){
+               String input = JOptionPane.showInputDialog(inputView, "Delta? (y/n)");
+               if(input.length()==1 && (input.equalsIgnoreCase("y") || input.equalsIgnoreCase("n"))){
+                   delta = (input.equalsIgnoreCase("y")) ? "DELTA" : "NON_DELTA";
+                   correctInput = true;
+               }else{
+                   JOptionPane.showMessageDialog(inputView, "Incorrect Input. Try Again.");
+               }
+            }
+
             try {
-                new ConvertTestData(requestPath, responsePath, outputPath);
+                new ConvertTestData(requestPath, responsePath, outputPath, delta, reqTrace);
                 JOptionPane.showMessageDialog(null, "Conversion Complete");
                 inputView.setVisible(false);
             } catch (IOException | JSONException ex) {
