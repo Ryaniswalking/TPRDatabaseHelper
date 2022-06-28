@@ -47,6 +47,16 @@ public class TestCaseController {
         tcView.setSourceAppCodeText(tcModel.getSourceAppCode());
         tcView.setDecodedRequestText(tcModel.getDecodedRequest());
         tcView.setDecodedResponseText(tcModel.getDecodedResponse());
+
+        tcView.showChildDataPanel(false);
+
+        //populate the child request and response section if applicable
+        if(!tcModel.getDecodedChildRequest().isEmpty() && !tcModel.getDecodedChildResponse().isEmpty()){
+            tcView.setDecodedRequestChildText(tcModel.getDecodedChildRequest());
+            tcView.setDecodedResponseChildText(tcModel.getDecodedChildResponse());
+            tcView.showChildDataPanel(true);
+            tcView.setSize(1200, 900);
+        }
     }
 
     class SaveButtonListener implements ActionListener{
@@ -67,6 +77,11 @@ public class TestCaseController {
                  testCaseObj.put("sourceAppCode", tcView.getSourceAppCodeText());
                  testCaseObj.put("request", tcView.getRequestTextEncoded());
                  testCaseObj.put("response", tcView.getResponseTextEncoded());
+
+                 if(tcView.isChildPanelVisible()){
+                     testCaseObj.put("requestChild", tcView.getRequestChildTextEncoded());
+                     testCaseObj.put("responseChild", tcView.getResponseChildTextEncoded());
+                 }
 
                  allTestCasesObj.put(tcModel.getTestCaseKeyName(), testCaseObj);
              }catch(JSONException ex){}
