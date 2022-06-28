@@ -42,7 +42,7 @@ public class TestCaseModel {
         decodedRequest = getDecodedRequestOrResponse("request");
         decodedResponse = getDecodedRequestOrResponse("response");
         decodedChildRequest = getDecodedRequestOrResponse("requestChild");
-        decodedChildResponse = getDecodedRequestOrResponse("responsChild");
+        decodedChildResponse = getDecodedRequestOrResponse("responseChild");
     }
 
     private String getDecodedRequestOrResponse(String path){
