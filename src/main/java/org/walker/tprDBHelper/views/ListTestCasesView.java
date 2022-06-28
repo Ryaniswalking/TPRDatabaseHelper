@@ -1,10 +1,13 @@
 package org.walker.tprDBHelper.views;
 
+import com.intellij.uiDesigner.core.GridConstraints;
+import com.intellij.uiDesigner.core.GridLayoutManager;
 import org.apache.commons.lang3.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -21,6 +24,10 @@ public class ListTestCasesView extends JFrame {
     private JPanel panel_Buttons;
     private JButton btn_Back;
     private JScrollPane scroll_TestCases;
+    private JTextField txt_Search;
+    private JButton btn_Search;
+    private JPanel panel_Search;
+    private JButton btn_Clear;
 
     public ListTestCasesView() {
 
@@ -30,6 +37,8 @@ public class ListTestCasesView extends JFrame {
         this.setLocation(dim.width / 2 - this.getSize().width / 2, dim.height / 2 - this.getSize().height / 2);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+        txt_Search.requestFocus();
+
         this.add(panel_Main);
     }
 
@@ -37,6 +46,7 @@ public class ListTestCasesView extends JFrame {
         if (keyNameArray == null) {
             return;
         }
+
 
         for (int i = 0; i < keyNameArray.size(); i++) {
             String keyName = keyNameArray.get(i);
@@ -59,7 +69,20 @@ public class ListTestCasesView extends JFrame {
     }
 
     public void addSaveToCouchButtonListener(ActionListener listenForSaveButtonClick) {
-        btn_SaveToCouch.addActionListener((listenForSaveButtonClick));
+        btn_SaveToCouch.addActionListener(listenForSaveButtonClick);
+    }
+
+    public void addSearchButtonListener(ActionListener listener) {
+        btn_Search.addActionListener(listener);
+        btn_Clear.addActionListener(listener);
+    }
+
+    public void addEnterKeyStrokeSearchListener(KeyListener listener) {
+        txt_Search.addKeyListener(listener);
+    }
+
+    public void setSearchTextFieldFocus() {
+        txt_Search.requestFocus();
     }
 
     public Integer getScrollLocation() {
@@ -69,6 +92,20 @@ public class ListTestCasesView extends JFrame {
     public void setScrollBarLocation(int location) {
         scroll_TestCases.getVerticalScrollBar().setValue(location);
     }
+
+    public String getSearchBarText() {
+        return txt_Search.getText();
+    }
+
+    public void clearSearchBarText() {
+        txt_Search.setText("");
+    }
+
+    public void clearTestCasePanel() {
+        panel_TestCases.removeAll();
+        scroll_TestCases.setViewportView(panel_TestCases);
+    }
+
 
     public void addBackButtonListener(ActionListener listener) {
         btn_Back.addActionListener(listener);
@@ -84,7 +121,7 @@ public class ListTestCasesView extends JFrame {
     private void $$$setupUI$$$() {
         createUIComponents();
         panel_Main = new JPanel();
-        panel_Main.setLayout(new BorderLayout(0, 25));
+        panel_Main.setLayout(new BorderLayout(0, 5));
         panel_Buttons = new JPanel();
         panel_Buttons.setLayout(new FlowLayout(FlowLayout.CENTER, 60, 5));
         panel_Main.add(panel_Buttons, BorderLayout.SOUTH);
@@ -99,6 +136,18 @@ public class ListTestCasesView extends JFrame {
         scroll_TestCases = new JScrollPane();
         panel_Main.add(scroll_TestCases, BorderLayout.CENTER);
         scroll_TestCases.setViewportView(panel_TestCases);
+        panel_Search = new JPanel();
+        panel_Search.setLayout(new GridLayoutManager(1, 3, new Insets(5, 5, 5, 5), -1, -1));
+        panel_Main.add(panel_Search, BorderLayout.NORTH);
+        txt_Search = new JTextField();
+        txt_Search.setMargin(new Insets(2, 6, 2, 6));
+        panel_Search.add(txt_Search, new GridConstraints(0, 0, 1, 1, GridConstraints.ANCHOR_WEST, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_WANT_GROW, GridConstraints.SIZEPOLICY_FIXED, null, new Dimension(150, -1), null, 0, false));
+        btn_Search = new JButton();
+        btn_Search.setText("Search");
+        panel_Search.add(btn_Search, new GridConstraints(0, 1, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
+        btn_Clear = new JButton();
+        btn_Clear.setText("Clear");
+        panel_Search.add(btn_Clear, new GridConstraints(0, 2, 1, 1, GridConstraints.ANCHOR_CENTER, GridConstraints.FILL_HORIZONTAL, GridConstraints.SIZEPOLICY_CAN_SHRINK | GridConstraints.SIZEPOLICY_CAN_GROW, GridConstraints.SIZEPOLICY_FIXED, null, null, null, 0, false));
     }
 
     /**
