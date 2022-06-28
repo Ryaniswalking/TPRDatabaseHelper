@@ -28,15 +28,15 @@ public class ConvertTestData {
 
     private static final String[] appCodes = new String[] {"GW","BB","QB","M1","AS","MR","NG"};
 
-    public ConvertTestData(String requestFilePath, String responseFilePath, String outputFilePath) throws IOException, JSONException {
+    public ConvertTestData(String requestFilePath, String responseFilePath, String outputFilePath, String delta, String reqTrace) throws IOException, JSONException {
         requestDir = new File(requestFilePath);
         responseDir = new File(responseFilePath);
         outputDirPath = outputFilePath;
 
-        runConverter();
+        runConverter(delta,reqTrace);
     }
 
-    private void runConverter() throws IOException, JSONException {
+    private void runConverter(String delta, String recTrace) throws IOException, JSONException {
         File[] listOfRequestFiles = requestDir.listFiles();
 
         for(String appCode: appCodes) {
@@ -72,7 +72,7 @@ public class ConvertTestData {
                 //encode the response
                 encodedResponseBody = Base64.getEncoder().encodeToString(new XmlPath(getResponse(fileName)).prettify().getBytes()); //create as xml to ensure proper format
 
-                setTestCaseInfo(fileName);
+                setTestCaseInfo(fileName, delta, recTrace);
 
                 FileWriter file = new FileWriter(outputDirPath+"/TestCases.txt");
                 file.write(prettifyJSON(allTestCases.toString()));
@@ -82,7 +82,7 @@ public class ConvertTestData {
 
     }
 
-    private static void setTestCaseInfo(String testCaseName) throws JSONException {
+    private static void setTestCaseInfo(String testCaseName, String delta, String reqTrace) throws JSONException {
         JSONObject tm4jData = setToLinkedHashMapJson();
         JSONArray tm4jArraySteps = new JSONArray();
         JSONObject tm4jSteps1 = setToLinkedHashMapJson();
@@ -91,8 +91,8 @@ public class ConvertTestData {
 
         //TM4J Information
         tm4jData.put("testCaseKey", "");
-        tm4jData.put("requirementTraceability", "");
-        tm4jData.put("delta", "");
+        tm4jData.put("requirementTraceability", reqTrace);
+        tm4jData.put("delta", delta);
         tm4jData.put("precondition", "");
 
         tm4jSteps1.put("step", "");
