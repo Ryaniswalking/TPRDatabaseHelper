@@ -14,7 +14,10 @@ import org.walker.tprDBHelper.workers.Prettify;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 
@@ -36,10 +39,7 @@ public class ListTestCasesController {
 
         ltcView.displayAllTestCases(ltcModel.getTestCaseNamesList(), updateTestCaseMap);
 
-
-        this.ltcView.addSelectedKeyNameListener(new SelectTestCaseListener());
-        this.ltcView.addSaveToCouchButtonListener(new SaveToCouchButtonLister());
-        this.ltcView.addBackButtonListener(new BackButtonListener());
+        addButtonListeners();
 
         this.ltcView.setVisible(true);
     }
@@ -61,15 +61,21 @@ public class ListTestCasesController {
 
         ltcView.displayAllTestCases(ltcModel.getTestCaseNamesList(), updateTestCaseMap);
 
-
-        this.ltcView.addSelectedKeyNameListener(new SelectTestCaseListener());
-        this.ltcView.addSaveToCouchButtonListener(new SaveToCouchButtonLister());
-        this.ltcView.addBackButtonListener(new BackButtonListener());
+        addButtonListeners();
 
         this.ltcView.setVisible(true);
 
         ltcView.setScrollBarLocation(scrollBarLocation);
     }
+
+    private void addButtonListeners(){
+        this.ltcView.addSelectedKeyNameListener(new SelectTestCaseListener());
+        this.ltcView.addSaveToCouchButtonListener(new SaveToCouchButtonLister());
+        this.ltcView.addBackButtonListener(new BackButtonListener());
+        this.ltcView.addSearchButtonListener(new SearchButtonListener());
+        this.ltcView.addEnterKeyStrokeSearchListener(new EnterButtonSearchListener());
+    }
+
 
     class SelectTestCaseListener implements ActionListener {
 
@@ -149,5 +155,79 @@ public class ListTestCasesController {
                 ex.printStackTrace();
             }
         }
+    }
+
+    class EnterButtonSearchListener implements KeyListener{
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            if (e.getKeyCode()==KeyEvent.VK_ENTER){
+                String searchCriteria = ltcView.getSearchBarText().trim();
+                System.out.println(e.getKeyCode());
+                searchForTestCase(searchCriteria);
+            }
+        }
+        //Dont need these override methods
+        @Override public void keyTyped(KeyEvent e) {}@Override public void keyReleased(KeyEvent e) {}
+    }
+
+    class SearchButtonListener implements ActionListener{
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            if(e.getActionCommand().equalsIgnoreCase("search")){
+                String searchCriteria = ltcView.getSearchBarText().trim();
+                searchForTestCase(searchCriteria);
+                return;
+            }
+
+            if(e.getActionCommand().equalsIgnoreCase("clear")){
+                clearSearchTestCase();
+                return;
+            }
+
+
+        }
+    }
+
+    private void searchForTestCase(String searchCriteria){
+
+
+        if(searchCriteria.length() == 0){
+            clearSearchTestCase();
+            return;
+        }
+
+        if(searchCriteria.length()<3){
+            JOptionPane.showMessageDialog(ltcView, "Search Criteria must contain 3 or more characters");
+            return;
+        }
+
+        ArrayList<String> testCaseNameList = ltcModel.getTestCaseNamesList();
+        ArrayList<String> foundTestCaseList = new ArrayList<>();
+
+        for(String testCase : testCaseNameList){
+            if(testCase.contains(searchCriteria)){
+                foundTestCaseList.add(testCase);
+            }
+        }
+
+        if(foundTestCaseList.isEmpty()){
+            JOptionPane.showMessageDialog(ltcView, "No results found");
+            return;
+        }
+        ltcView.clearTestCasePanel();
+        ltcView.displayAllTestCases(foundTestCaseList, updateTestCaseMap);
+        this.ltcView.addSelectedKeyNameListener(new SelectTestCaseListener());
+        ltcView.setSearchTextFieldFocus();
+    }
+
+    private void clearSearchTestCase(){
+        ltcView.clearSearchBarText();
+        ltcView.clearTestCasePanel();
+        ltcView.displayAllTestCases(ltcModel.getTestCaseNamesList(), updateTestCaseMap);
+        this.ltcView.addSelectedKeyNameListener(new SelectTestCaseListener());
+        ltcView.setSearchTextFieldFocus();
     }
 }
