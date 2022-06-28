@@ -113,11 +113,19 @@ public class Prettify {
         prettyObj.put("test_service", uglyCouchObject.getString("test_service"));
         prettyObj.put("testCaseName", uglyCouchObject.getString("testCaseName"));
 
+        String testCaseDescription = "";
+        try{
+            testCaseDescription = uglyCouchObject.getString("testCaseDescription");
+        }catch(JSONException e){
+        }
+
+        prettyObj.put("testCaseDescription", testCaseDescription);
+
         for(AppCodes appCode : AppCodes.values()){
             try {
                 prettyObj.put(appCode.toString(), uglyCouchObject.getJSONArray(appCode.toString()));
             }catch(JSONException e){
-                System.out.println("No Information for: " + appCode.toString());
+                System.out.println("No Information for: " + appCode.toString() + " [prettifyForCouch()]");
             }
         }
 
@@ -144,6 +152,12 @@ public class Prettify {
             prettyTestCase.put("response", uglyTestCase.getString("response"));
 
             try{
+                prettyTestCase.put("requestChild", uglyTestCase.getString("requestChild"));
+                prettyTestCase.put("responseChild", uglyTestCase.getString("responseChild"));
+            }catch(JSONException e){
+            }
+
+            try{
                 JSONObject uglyFuncReq = uglyTestCase.getJSONObject("functionalRequirements");
 
                 JSONArray funcReq = uglyFuncReq.names();
@@ -161,6 +175,28 @@ public class Prettify {
                 }
 
                 prettyTestCase.put("functionalRequirements", prettyFuncReq);
+
+
+            }catch (JSONException e){}
+
+            try{
+                JSONObject uglyFuncReq = uglyTestCase.getJSONObject("functionalRequirementsChild");
+
+                JSONArray funcReq = uglyFuncReq.names();
+                ArrayList<String> funcReqList = new ArrayList<>();
+
+                for(int i=0;i<funcReq.length();i++){
+                    funcReqList.add(funcReq.getString(i));
+                }
+
+                Collections.sort(funcReqList);
+
+                JSONObject prettyFuncReq = setObjectAsLinkedHashMap();
+                for(String req : funcReqList){
+                    prettyFuncReq.put(req, uglyFuncReq.getString(req));
+                }
+
+                prettyTestCase.put("functionalRequirementsChild", prettyFuncReq);
 
 
             }catch (JSONException e){}
